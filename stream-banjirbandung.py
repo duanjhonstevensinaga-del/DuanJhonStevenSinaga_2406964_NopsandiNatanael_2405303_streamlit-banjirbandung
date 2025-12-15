@@ -42,7 +42,7 @@ banjir_diagnosis = ''
 
 # membuat tombol untuk prediksi
 if st.button('Prediksi Banjir'):
-    banjir_prediction = Banjir_model.predict([[Tahun, Bulan, Curah_Hujan, Min_temp, max_temp, avg_temp, min_kelembapan, max_kelembapan, avg_kelembapan]])
+    banjir_prediction = Banjir_model.predict([[Bulan, Tahun, Curah_Hujan, Min_temp, max_temp, avg_temp, min_kelembapan, max_kelembapan, avg_kelembapan]])
 
     if (banjir_prediction[0] == 0):
         banjir_diagnosis = 'Tidak akan terjadi banjir'
@@ -50,6 +50,7 @@ if st.button('Prediksi Banjir'):
         banjir_diagnosis = 'Akan terjadi banjir'
 
     st.success(banjir_diagnosis)
+
 
 
 
