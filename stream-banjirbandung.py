@@ -44,10 +44,11 @@ banjir_diagnosis = ''
 if st.button('Prediksi Banjir'):
     banjir_prediction = Banjir_model.predict([[Tahun, Bulan, Curah_Hujan, Min_temp, max_temp, avg_temp, min_kelembapan, max_kelembapan, avg_kelembapan]])
 
-    if (banjir_prediction[0] == 1):
+    if (banjir_prediction[0] == 0):
         banjir_diagnosis = 'Area Berpotensi Banjir'
     else:
         banjir_diagnosis = 'Area Tidak Berpotensi Banjir'
 
     st.success(banjir_diagnosis)
+
 
