@@ -11,10 +11,10 @@ st.title('Data Mining Prediksi Banjir di Bandung')
 col1, col2 = st.columns(2)
 
 with col1 :
-    Tahun = st.text_input('Input Tahun')
-
-with col2 :
     Bulan = st.text_input('Input Bulan')
+    
+with col2 :
+    Tahun = st.text_input('Input Tahun')
 
 with col1 :
     Curah_Hujan = st.text_input('Input Curah Hujan (mm)')
