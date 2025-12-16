@@ -31,7 +31,3 @@ if st.button('Prediksi Banjir'):
         st.success("Hasil Prediksi: Tidak akan terjadi banjir")
     else:
         st.error("Hasil Prediksi: Akan terjadi banjir")
-
-    # Menampilkan probabilitas
-    proba = Banjir_model.predict_proba(input_data)
-    st.info(f"Probabilitas Tidak Banjir: {proba[0][0]*100:.2f}% | Banjir: {proba[0][1]*100:.2f}%")
