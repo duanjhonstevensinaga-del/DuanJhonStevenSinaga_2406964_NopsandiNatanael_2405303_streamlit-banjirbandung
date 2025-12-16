@@ -1,56 +1,37 @@
-import pickle
 import streamlit as st
+import pickle
+import numpy as np
 
-# membaca model
+# --- Load pipeline ---
 Banjir_model = pickle.load(open('Banjir_model.sav', 'rb'))
 
-# judul web
 st.title('Data Mining Prediksi Banjir di Bandung')
 
-# membagi column
 col1, col2 = st.columns(2)
 
-with col1 :
-    Bulan = st.text_input('Input Bulan')
-    
-with col2 :
-    Tahun = st.text_input('Input Tahun')
+with col1:
+    Bulan = st.number_input('Bulan', min_value=1, max_value=12, step=1)
+    Curah_Hujan = st.number_input('Curah Hujan (mm)', step=0.1)
+    max_temp = st.number_input('Suhu Maksimum (°C)', step=0.1)
+    min_kelembapan = st.number_input('Kelembapan Minimum (%)', step=0.1)
+    avg_kelembapan = st.number_input('Kelembapan Rata-rata (%)', step=0.1)
 
-with col1 :
-    Curah_Hujan = st.text_input('Input Curah Hujan (mm)')
+with col2:
+    Tahun = st.number_input('Tahun', min_value=2000, max_value=2100, step=1)
+    Min_temp = st.number_input('Suhu Minimum (°C)', step=0.1)
+    avg_temp = st.number_input('Suhu Rata-rata (°C)', step=0.1)
+    max_kelembapan = st.number_input('Kelembapan Maksimum (%)', step=0.1)
 
-with col2 :
-    Min_temp = st.text_input('Input Suhu Minimum (°C)')
-
-with col1 :
-    max_temp = st.text_input('Input Suhu Maksimum (°C)')
-
-with col2 :
-    avg_temp = st.text_input('Input Suhu Rata-rata (°C)')   
-
-with col1 :
-    min_kelembapan = st.text_input('Input Kelembapan Minimum (%)')
-
-with col2 :
-    max_kelembapan = st.text_input('Input Kelembapan Maksimum (%)')
-
-with col1 :
-    avg_kelembapan = st.text_input('Input Kelembapan Rata-rata (%)')
-
-# code untuk prediksi
-banjir_diagnosis = ''
-
-# membuat tombol untuk prediksi
 if st.button('Prediksi Banjir'):
-    banjir_prediction = Banjir_model.predict([[Bulan, Tahun, Curah_Hujan, Min_temp, max_temp, avg_temp, min_kelembapan, max_kelembapan, avg_kelembapan]])
+    input_data = np.array([[Bulan, Tahun, Curah_Hujan, Min_temp, max_temp,
+                            avg_temp, min_kelembapan, max_kelembapan, avg_kelembapan]])
+    prediction = Banjir_model.predict(input_data)
 
-    if (banjir_prediction[0] == 0):
-        banjir_diagnosis = 'Tidak akan terjadi banjir'
+    if prediction[0] == 0:
+        st.success("Hasil Prediksi: Tidak akan terjadi banjir")
     else:
-        banjir_diagnosis = 'Akan terjadi banjir'
+        st.error("Hasil Prediksi: Akan terjadi banjir")
 
-    st.success(banjir_diagnosis)
-
-
-
-
+    # Menampilkan probabilitas
+    proba = Banjir_model.predict_proba(input_data)
+    st.info(f"Probabilitas Tidak Banjir: {proba[0][0]*100:.2f}% | Banjir: {proba[0][1]*100:.2f}%")
